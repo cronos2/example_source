@@ -1,0 +1,60 @@
+name: Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to reset"
+        required: true
+        default: "main"
+      message:
+        description: "New initial commit message"
+        required: true
+        default: "Initial commit"
+
+permissions:
+  contents: write
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.branch }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create orphan branch with current files
+        run: |
+          set -euo pipefail
+          BR="${{ inputs.branch }}"
+          MSG="${{ inputs.message }}"
+
+          # Create orphan branch (no parents)
+          git checkout --orphan __reset_tmp__
+
+          # Stage everything from working tree
+          git add -A
+
+          # Create a single new commit
+          git commit -m "$MSG"
+
+          # Force-update the target branch to this commit
+          git branch -f "$BR" HEAD
+
+      - name: Force push rewritten branch
+        run: |
+          set -euo pipefail
+          BR="${{ inputs.branch }}"
+          git push origin "HEAD:refs/heads/$BR" --force
+
+      - name: Cleanup (local)
+        if: always()
+        run: |
+          git branch -D __reset_tmp__ || true

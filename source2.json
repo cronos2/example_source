@@ -1,0 +1,28 @@
+{
+  "ua": true,
+  "example_text_list": [
+    "https://raw.githubusercontent.com/cronos2/example_text/refs/heads/main/example.txt",
+    "https://cdn.jsdelivr.net/gh/cronos2/example_text@main/example.txt"
+  ],
+  "ah": [
+    "http://95.163.176.1",
+    "http://95.163.176.1"
+  ],
+  "dh": [
+    "http://95.163.176.1",
+    "http://95.163.176.1"
+  ],
+  "backup_servers_host": "http://127.0.0.1",
+  "backup_servers_host_secret_api_key": "fkGvuybiH7hjvyGfyuv820bi02hs0572hjs289GVUHJK=3y2iuk,1678101334|678798hjJHEBDHFsHBoioi2",
+  "servers_list": "http://127.0.0.1",
+  "servers_online": "http://127.0.0.1",
+  "generate_config": {
+    "uri": "http://127.0.0.1",
+    "body": {
+      "uniqueId": "{uuid}",
+      "host": "#ref../servers_list@{host}"
+    }
+  },
+  "us": false,
+  "image_base_url": "http://127.0.0.1:4004/static/assets/images/countries/png100px/"
+}
